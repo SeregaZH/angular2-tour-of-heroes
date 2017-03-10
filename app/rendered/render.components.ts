@@ -1,0 +1,52 @@
+import {
+  Component, AfterViewInit, ViewContainerRef, ViewChild, Input, ReflectiveInjector,
+  Provider, ComponentFactoryResolver
+} from '@angular/core';
+
+@Component({
+    selector: 'form-container',
+    template: '<div #formContainer></div>'
+})
+
+export class RenderComponent implements AfterViewInit {
+
+  constructor(private resolver: ComponentFactoryResolver){}
+
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) container: ViewContainerRef;
+
+  @Input() set formConfig(controls: any[]) {
+    if (!controls || !controls.length) {
+      return;
+    }
+
+    const inputProviders = controls
+      .map(
+        control => {
+          return {
+            id: control.id,
+            injector: this.createInjector(control.inputs),
+            factory: this.resolver.resolveComponentFactory(control.name)
+          };
+        }
+      );
+
+    inputProviders.forEach(control => {
+      const component = control.factory.create(control.injector);
+      this.container.insert(component.hostView);
+    });
+  }
+
+  public ngAfterViewInit(): void {
+
+  }
+
+  private createInjector(inputs: any[]): any {
+    const inputProviders = inputs.map<Provider>(input => {
+      return {
+        provide: input.name, useValue: input.value
+      }
+    });
+    const resolvedInputs = ReflectiveInjector.resolve(inputProviders);
+    return ReflectiveInjector.fromResolvedProviders(resolvedInputs, this.container.parentInjector);
+  }
+}
