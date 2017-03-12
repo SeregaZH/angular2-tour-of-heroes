@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
+import { TextboxComponent } from './rendered/controls/textbox.component';
 
 @Component({
   moduleId: module.id,
@@ -12,6 +13,25 @@ import { HeroService } from './hero.service';
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
+
+  public config = [
+    {
+      id: 'textbox',
+      name: TextboxComponent,
+      inputs: [{ name: 'text', value: ''}, { name: 'placeholder', value: 'Type text' }]
+    }
+  ];
+
+  public componentsConfig = [
+    {
+      type: 'text',
+      value: 'Some'
+    },
+    {
+      type: 'checkbox',
+      value: true
+    }
+  ];
 
   constructor(
     private router: Router,

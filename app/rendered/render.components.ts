@@ -1,5 +1,5 @@
 import {
-  Component, AfterViewInit, ViewContainerRef, ViewChild, Input, ReflectiveInjector,
+  Component, ViewContainerRef, ViewChild, Input, ReflectiveInjector,
   Provider, ComponentFactoryResolver
 } from '@angular/core';
 
@@ -8,11 +8,11 @@ import {
     template: '<div #formContainer></div>'
 })
 
-export class RenderComponent implements AfterViewInit {
+export class RenderComponent {
 
   constructor(private resolver: ComponentFactoryResolver){}
 
-  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) container: ViewContainerRef;
+  @ViewChild('formContainer', { read: ViewContainerRef }) container: ViewContainerRef;
 
   @Input() set formConfig(controls: any[]) {
     if (!controls || !controls.length) {
@@ -33,11 +33,8 @@ export class RenderComponent implements AfterViewInit {
     inputProviders.forEach(control => {
       const component = control.factory.create(control.injector);
       this.container.insert(component.hostView);
+      component.changeDetectorRef.detectChanges();
     });
-  }
-
-  public ngAfterViewInit(): void {
-
   }
 
   private createInjector(inputs: any[]): any {

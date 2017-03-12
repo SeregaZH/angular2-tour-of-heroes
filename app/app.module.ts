@@ -11,6 +11,10 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule, routedComponents } from './app-routing.module';
 import { HeroService } from './hero.service';
 import { HeroSearchComponent } from './hero-search.component';
+import { RenderComponent } from './rendered/render.components';
+import { TextboxComponent } from './rendered/controls/textbox.component';
+import { DynamicComponent } from './dynamic-view/dynamic.component';
+import { DynamicViewComponent } from './dynamic-view/dynamic-view.component';
 
 @NgModule({
   imports: [
@@ -23,7 +27,14 @@ import { HeroSearchComponent } from './hero-search.component';
   declarations: [
     AppComponent,
     HeroSearchComponent,
-    routedComponents
+    routedComponents,
+    RenderComponent,
+    TextboxComponent,
+    DynamicComponent,
+    DynamicViewComponent
+  ],
+  entryComponents: [
+    TextboxComponent
   ],
   providers: [
     HeroService

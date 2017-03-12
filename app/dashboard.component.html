@@ -6,4 +6,6 @@
     </div>
   </div>
 </div>
-<hero-search></hero-search>
+<form-container [formConfig]="config"></form-container>
+<dynamic-view [components]="componentsConfig"></dynamic-view>
+<hero-search [test]="'testValue'"></hero-search>
